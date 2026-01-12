@@ -1,10 +1,9 @@
-import { Environment, Float, OrbitControls } from "@react-three/drei";
 import { Book } from "./Book";
 export const Experience = () => {
 
-  const rotationX = window.innerWidth > 800 ? -Math.PI / 6 : -Math.PI / 12
+  const rotationX = window.innerWidth > 800 ? -Math.PI / 6 : -Math.PI / 16
   const rotationY = window.innerWidth > 800 ? - Math.PI / 20 : -Math.PI / 16
-  const rotationZ = window.innerWidth > 800 ? - Math.PI / 30 : -Math.PI / 1.99
+  const rotationZ = window.innerWidth > 800 ? - Math.PI / 27 : -Math.PI / 1.99
   return (
     <>
       <group rotation-x={rotationX} rotation-y={rotationY} rotation-z={rotationZ}>
@@ -20,10 +19,7 @@ export const Experience = () => {
         shadow-mapSize-height={2048}
         shadow-bias={-0.0001}
       />
-      <mesh position-y={window.innerWidth > 800 ? -1.5 : -2} rotation-x={-Math.PI / (window.innerWidth > 800 ? 2 : 22)} receiveShadow>
-        <planeGeometry args={[100, 100]} />
-        <shadowMaterial transparent opacity={0.2} />
-      </mesh>
+
     </>
   );
 };
