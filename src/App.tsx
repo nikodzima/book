@@ -9,7 +9,7 @@ function App() {
     <>
       <UI />
       <Loader />
-      <Canvas shadows camera={{
+      <Canvas shadows dpr={[1, Math.min(2, window.devicePixelRatio)]} camera={{
         position: [-0.5, 1, window.innerWidth > 800 ? 2 : 5],
         fov: 45,
       }}>

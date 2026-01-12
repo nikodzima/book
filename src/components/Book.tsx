@@ -1,5 +1,5 @@
 import { useCursor, useTexture } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useAtom } from "jotai";
 import { easing } from "maath";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -8,6 +8,8 @@ import {
   BoxGeometry,
   Color,
   Float32BufferAttribute,
+  LinearFilter,
+  LinearMipmapLinearFilter,
   MathUtils,
   MeshStandardMaterial,
   Skeleton,
@@ -22,7 +24,7 @@ import { pageAtom, pages } from "./UI";
 const easingFactor = 0.5; // Controls the speed of the easing
 const easingFactorFold = 0.3; // Controls the speed of the easing
 const insideCurveStrength = 0.3; // Controls the strength of the curve (внутренняя часть)
-const outsideCurveStrength = 0.01; // Controls the strength of the curve (внешняя часть)
+const outsideCurveStrength = 0.002; // Controls the strength of the curve (внешняя часть)
 const turningCurveStrength = 0.03;
 
 const PAGE_WIDTH = 1.28;
@@ -31,8 +33,6 @@ const PAGE_DEPTH = 0.003;
 const PAGE_SEGMENTS = 30;
 const SEGMENT_WIDTH = PAGE_WIDTH / PAGE_SEGMENTS;
 
-const scaleX = window.innerWidth > 800 ? window.innerWidth / 1400 : window.innerWidth / 500;
-const scaleY = window.innerWidth > 800 ? window.innerHeight / 900 : window.innerWidth / 500;
 
 const pageGeometry = new BoxGeometry(
   PAGE_WIDTH,
@@ -101,7 +101,22 @@ const Page = ({ number, front, back, page, opened, bookClosed, ...props }: any) 
       ? []
       : []),
   ]);
+  const { gl } = useThree();
+  const maxAniso = gl.capabilities.getMaxAnisotropy();
+
+  useEffect(() => {
+    picture.anisotropy = maxAniso;
+    picture2.anisotropy = maxAniso;
+  }, [picture, picture2])
   picture.colorSpace = picture2.colorSpace = SRGBColorSpace;
+  picture.minFilter = LinearMipmapLinearFilter;
+  picture.magFilter = LinearFilter;
+
+  picture2.minFilter = LinearMipmapLinearFilter;
+  picture2.magFilter = LinearFilter;
+
+  picture.generateMipmaps = true;
+  picture2.generateMipmaps = true;
   const group = useRef();
   const turnedAt = useRef(0);
   const lastOpened = useRef(opened);
@@ -260,7 +275,6 @@ const Page = ({ number, front, back, page, opened, bookClosed, ...props }: any) 
       <primitive
         object={manualSkinnedMesh}
         ref={skinnedMeshRef}
-        scale={[scaleX, scaleY, 1]}
         position-z={-number * PAGE_DEPTH + page * PAGE_DEPTH}
       />
     </group>
