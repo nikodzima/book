@@ -89,14 +89,14 @@ const pageMaterials = [
 ];
 
 pages.forEach((page) => {
-  useTexture.preload(`/images/${page.front}.jpg`);
-  useTexture.preload(`/images/${page.back}.jpg`);
+  useTexture.preload(`/images/${page.front}.png`);
+  useTexture.preload(`/images/${page.back}.png`);
 });
 
 const Page = ({ number, front, back, page, opened, bookClosed, ...props }: any) => {
   const [picture, picture2, pictureRoughness] = useTexture([
-    `/images/${front}.jpg`,
-    `/images/${back}.jpg`,
+    `/images/${front}.png`,
+    `/images/${back}.png`,
     ...(number === 0 || number === pages.length - 1
       ? []
       : []),
