@@ -2,12 +2,12 @@ import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 // получаем все картинки из /public/images, поддерживаем jpg и png
 // eager: true — сразу загружает модули
-const modules = import.meta.glob("/public/images/Аня_pages-to-jpg-0*.{jpg,png}", { eager: true });
+const modules = import.meta.glob("/public/images/*.{jpg,png}", { eager: true });
 
 // преобразуем в массив с именами файлов
 const imageFiles = Object.keys(modules)
   .map((path) => {
-    const match = path.match(/Аня_pages-to-jpg-0(\d+)\.(jpg|png)$/);
+    const match = path.match(/file-(\d+)\.(jpg|png)$/);
     if (!match) return null;
     return { name: match[0].replace(/\.(jpg|png)$/, ""), num: parseInt(match[1], 10) };
   })
